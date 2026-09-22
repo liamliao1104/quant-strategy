@@ -38,3 +38,156 @@ jobs:
           git add reports/
           git diff --staged --quiet || git commit -m "ETF分析报告 $(date -u -d '+8 hours' '+%Y%m%d')"
           git push
+
+      - name: 推送报告到微信(Server酱)
+        if: always()
+        env:
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: |
+          if [ -z "$SERVERCHAN_KEY" ]; then
+            echo "未配置 SERVERCHAN_KEY，跳微信推送"
+            exit 0
+          fi
+          python3 - <<'PYEOF'
+          import json, os, urllib.request, urllib.parse, datetime, glob
+
+          today = datetime.date.today().strftime("%Y%m%d")
+          json_files = glob.glob(f"reports/etf_analysis_{today}.json")
+          if not json_files:
+              title = f"ETF分析 {today} - 未生成报告"
+              desp = "报告文件未生成，请检查 Actions 运行日志。"
+          else:
+              with open(json_files[0], encoding="utf-8") as f:
+                  data = json.load(f)
+              state = data.get("market_state", "未知")
+              ranked = data.get("ranked", [])
+              filtered_count = data.get("filtered_count", 0)
+              signals = data.get("market_signals", [])
+              mi = data.get("market_info", {})
+
+              if ranked:
+                  top = ranked[0]
+                  title = f"ETF分析 {today}: {top['name']} 得分{top['score']:.2f}"
+              else:
+                  title = f"ETF分析 {today}: 无ETF通过过滤"
+
+              lines = [f"## {today} ETF动量分析报告\n"]
+              lines.append(f"**市场状态**: {state} ({mi.get('filter','')})\n")
+              lines.append(f"**乖离率**: {mi.get('bias',0):.2%} | **RSI**: {mi.get('current_rsi','N/A')}\n")
+              lines.append(f"**风险信号**: {'; '.join(signals) if signals else '无'}\n")
+              lines.append(f"**通过过滤**: {len(ranked)}只 | **被过滤**: {filtered_count}只\n")
+              if ranked:
+                  lines.append("\n### 动量排名 Top5\n")
+                  lines.append("| 排名 | 代码 | 名称 | 得分 | 年化 | R2 |")
+                  lines.append("|------|------|------|------|------|-----|")
+                  for i, m in enumerate(ranked[:5]):
+                      lines.append(f"| {i+1} | {m['code']} | {m['name']} | {m['score']:.4f} | {m['annualized']*100:.2f}% | {m['r_squared']:.4f} |")
+              fl = data.get("filtered", [])
+              if fl:
+                  lines.append("\n### 被过滤ETF\n")
+                  for item in fl[:15]:
+                      lines.append(f"- {item['code']} {item['name']} — {item['reason']}")
+                  if len(fl) > 15:
+                      lines.append(f"\n_...还有{len(fl)-15}只_")
+              desp = "\n".join(lines)
+
+          key = os.environ["SERVERCHAN_KEY"]
+          url = f"https://sctapi.ftqq.com/{key}.send"
+          data = urllib.parse.urlencode({"title": title, "desp": desp}).encode()
+          req = urllib.request.Request(url, data=data, method="POST")
+          with urllib.request.urlopen(req, timeout=10) as resp:
+              print(f"Server酱推送结果: {resp.status}")
+          PYEOF
+
+      - name: 邮件推送报告
+        if: always()
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: |
+          if [ -z "$SMTP_SERVER" ] || [ -z "$SMTP_USER" ] || [ -z "$MAIL_TO" ]; then
+            echo "未配置邮件 Secrets，跳过邮件推送"
+            exit 0
+          fi
+          python3 - <<'PYEOF'
+          import json, os, smtplib, ssl, datetime, glob
+          from email.mime.multipart import MIMEMultipart
+          from email.mime.text import MIMEText
+          from email.utils import formatdate
+
+          today = datetime.date.today().strftime("%Y%m%d")
+          json_files = glob.glob(f"reports/etf_analysis_{today}.json")
+          html_file = f"reports/etf_analysis_{today}.html"
+
+          if not json_files:
+              subject = f"ETF分析 {today} - 未生成报告"
+              body_text = "报告文件未生成，请检查 Actions 运行日志。"
+          else:
+              with open(json_files[0], encoding="utf-8") as f:
+                  data = json.load(f)
+              state = data.get("market_state", "未知")
+              ranked = data.get("ranked", [])
+              filtered_count = data.get("filtered_count", 0)
+              signals = data.get("market_signals", [])
+              mi = data.get("market_info", {})
+
+              if ranked:
+                  top = ranked[0]
+                  subject = f"ETF分析 {today}: {top['name']} 得分{top['score']:.2f}"
+              else:
+                  subject = f"ETF分析 {today}: 无ETF通过过滤"
+
+              lines = [f"<h2>{today} ETF动量分析报告</h2>"]
+              lines.append(f"<p><b>市场状态</b>: {state} ({mi.get('filter','')})</p>")
+              bias = mi.get('bias', 0) or 0
+              rsi = mi.get('current_rsi', 'N/A')
+              rsi_str = f"{rsi:.1f}" if isinstance(rsi, (int, float)) else str(rsi)
+              lines.append(f"<p><b>乖离率</b>: {bias:.2%} | <b>RSI</b>: {rsi_str}</p>")
+              lines.append(f"<p><b>风险信号</b>: {'; '.join(signals) if signals else '无'}</p>")
+              lines.append(f"<p><b>通过过滤</b>: {len(ranked)}只 | <b>被过滤</b>: {filtered_count}只</p>")
+              if ranked:
+                  lines.append("<h3>动量排名 Top5</h3><table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse;'>")
+                  lines.append("<tr><th>排名</th><th>代码</th><th>名称</th><th>得分</th><th>年化</th><th>R2</th></tr>")
+                  for i, m in enumerate(ranked[:5]):
+                      lines.append(f"<tr><td>{i+1}</td><td>{m['code']}</td><td>{m['name']}</td><td>{m['score']:.4f}</td><td>{m['annualized']*100:.2f}%</td><td>{m['r_squared']:.4f}</td></tr>")
+                  lines.append("</table>")
+              fl = data.get("filtered", [])
+              if fl:
+                  lines.append("<h3>被过滤ETF</h3><ul>")
+                  for item in fl[:15]:
+                      lines.append(f"<li>{item['code']} {item['name']} — {item['reason']}</li>")
+                  if len(fl) > 15:
+                      lines.append(f"<li><i>...还有{len(fl)-15}只</i></li>")
+                  lines.append("</ul>")
+              body_text = "\n".join(lines)
+
+          server = os.environ["SMTP_SERVER"]
+          port = int(os.environ.get("SMTP_PORT", "465"))
+          user = os.environ["SMTP_USER"]
+          password = os.environ["SMTP_PASSWORD"]
+          to_addr = os.environ["MAIL_TO"]
+
+          msg = MIMEMultipart("alternative")
+          msg["Subject"] = subject
+          msg["From"] = f"ETF策略助手 <{user}>"
+          msg["To"] = to_addr
+          msg["Date"] = formatdate(localtime=True)
+          msg.attach(MIMEText(body_text, "html", "utf-8"))
+
+          context = ssl.create_default_context()
+          if port == 465:
+              with smtplib.SMTP_SSL(server, port, context=context, timeout=30) as smtp:
+                  smtp.login(user, password)
+                  smtp.sendmail(user, to_addr.split(","), msg.as_string())
+          else:
+              with smtplib.SMTP(server, port, timeout=30) as smtp:
+                  smtp.ehlo()
+                  smtp.starttls(context=context)
+                  smtp.ehlo()
+                  smtp.login(user, password)
+                  smtp.sendmail(user, to_addr.split(","), msg.as_string())
+          print(f"邮件已发送到 {to_addr}: {subject}")
+          PYEOF
