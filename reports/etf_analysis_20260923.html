@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>七星ETF轮动分析报告 - 2026-09-23</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.6;padding:20px}
+.container{max-width:960px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;padding:30px;border-radius:12px;margin-bottom:20px}
+.header h1{font-size:24px;margin-bottom:8px}
+.header .date{font-size:14px;opacity:.7}
+.market-state{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;margin-top:12px;background:rgba(39,174,96,0.08);color:#27ae60;border:1px solid #27ae60}
+.section{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section h2{font-size:18px;margin-bottom:16px;border-left:4px solid #3498db;padding-left:12px}
+.advice-card{display:flex;align-items:center;gap:16px;padding:20px;border-radius:10px}
+.advice-card.buy{background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.3)}
+.advice-card.defensive{background:rgba(243,156,18,.08);border:1px solid rgba(243,156,18,.3)}
+.advice-icon{font-size:14px;font-weight:700;color:#fff;padding:6px 14px;border-radius:6px;white-space:nowrap}
+.advice-card.buy .advice-icon{background:#27ae60}
+.advice-card.defensive .advice-icon{background:#f39c12}
+.advice-title{font-size:18px;font-weight:600}
+.advice-detail{font-size:13px;color:#7f8c8d;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#f8f9fa;padding:10px 12px;text-align:left;font-weight:600;color:#6c757d;border-bottom:2px solid #dee2e6;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #e9ecef}
+tr.rank-top{background:rgba(39,174,96,.05)}
+tr.rank-top td{font-weight:600}
+td.score{font-family:"SF Mono",monospace;font-weight:600;color:#2980b9}
+.market-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
+.info-item{background:#f8f9fa;padding:12px;border-radius:8px}
+.info-label{font-size:12px;color:#6c757d;margin-bottom:4px}
+.info-value{font-size:16px;font-weight:600}
+.filtered-item{padding:6px 0;font-size:13px;color:#95a5a6;border-bottom:1px solid #ecf0f1}
+.footer{text-align:center;font-size:12px;color:#bdc3c7;margin-top:20px;padding:20px}
+.signals{margin-top:12px;padding:10px;background:rgba(39,174,96,0.08);border-radius:8px;font-size:13px;color:#27ae60}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+    <h1>ETF 七星ETF本地轮动策略 - 每日分析报告</h1>
+    <div class="date">2026-09-23 | 基于沪深300ETF风险基准</div>
+    <div class="market-state">市场状态: 正常期(拉普拉斯滤波器)</div>
+</div>
+<div class="section"><h2>交易建议</h2>
+        <div class="advice-card buy">
+            <div class="advice-icon">买入</div>
+            <div class="advice-content">
+                <div class="advice-title">501018 南方原油</div>
+                <div class="advice-detail">动量得分 2.2612 | 年化 336.41% | R2 0.6721</div>
+                <div class="advice-detail">滤波器: 拉普拉斯滤波器 | 市场状态: 正常期</div>
+            </div>
+        </div></div>
+<div class="section">
+    <h2>市场状态分析</h2>
+    <div class="market-info">
+        <div class="info-item"><div class="info-label">乖离率</div><div class="info-value">-0.04%</div></div>
+        <div class="info-item"><div class="info-label">RSI(14)</div><div class="info-value">48.8</div></div>
+        <div class="info-item"><div class="info-label">20日均线</div><div class="info-value">4.615</div></div>
+        <div class="info-item"><div class="info-label">近20日高点</div><div class="info-value">4.706</div></div>
+        <div class="info-item"><div class="info-label">近20日低点</div><div class="info-value">4.485</div></div>
+        <div class="info-item"><div class="info-label">当前回撤</div><div class="info-value">1.98%</div></div>
+    </div>
+    <div class="signals"><strong>风险信号:</strong> 无风险信号</div>
+</div>
+<div class="section">
+    <h2>ETF 动量排名(通过全部过滤)</h2>
+    <table>
+        <thead><tr><th>排名</th><th>代码</th><th>名称</th><th>得分</th><th>年化收益</th><th>R2</th><th>短期年化</th><th>现价</th></tr></thead>
+        <tbody>
+        <tr class="rank-top">
+            <td>1</td><td>501018</td><td>南方原油</td>
+            <td class="score">2.2612</td>
+            <td>336.41%</td>
+            <td>0.6721</td>
+            <td>59.64%</td>
+            <td>1.996</td>
+        </tr>
+        <tr>
+            <td>2</td><td>159509</td><td>纳指科技ETF</td>
+            <td class="score">0.4131</td>
+            <td>85.98%</td>
+            <td>0.4805</td>
+            <td>469.77%</td>
+            <td>3.049</td>
+        </tr>
+        <tr>
+            <td>3</td><td>513100</td><td>纳指ETF</td>
+            <td class="score">0.0950</td>
+            <td>34.82%</td>
+            <td>0.2727</td>
+            <td>149.03%</td>
+            <td>2.316</td>
+        </tr>
+        <tr>
+            <td>4</td><td>563300</td><td>中证2000ETF</td>
+            <td class="score">0.0694</td>
+            <td>33.70%</td>
+            <td>0.2060</td>
+            <td>52.88%</td>
+            <td>1.485</td>
+        </tr>
+        <tr>
+            <td>5</td><td>511220</td><td>城投债ETF</td>
+            <td class="score">0.0265</td>
+            <td>2.93%</td>
+            <td>0.9044</td>
+            <td>3.17%</td>
+            <td>10.432</td>
+        </tr>
+        <tr>
+            <td>6</td><td>513310</td><td>中韩半导体ETF</td>
+            <td class="score">0.0005</td>
+            <td>13.60%</td>
+            <td>0.0035</td>
+            <td>44.38%</td>
+            <td>4.937</td>
+        </tr></tbody>
+    </table>
+</div>
+<div class="section">
+    <h2>被过滤的ETF(共32只)</h2>
+    <div class="filtered-item">518880 黄金ETF — 短期动量为负(-40.8%)</div><div class="filtered-item">159980 有色ETF — 短期动量为负(-14.8%)</div><div class="filtered-item">159985 豆粕ETF — 短期动量为负(-73.8%)</div><div class="filtered-item">161226 白银LOF — 短期动量为负(-48.5%)</div><div class="filtered-item">159981 能源化工ETF — 短期动量为负(-6.9%)</div><div class="filtered-item">513290 纳指生物ETF — 短期动量为负(-42.2%)</div><div class="filtered-item">513500 标普500ETF — 得分-0.00超出范围</div><div class="filtered-item">159529 标普消费 — 得分-0.23超出范围</div><div class="filtered-item">513400 道琼斯ETF — 短期动量为负(-27.3%)</div><div class="filtered-item">513520 日经225ETF — 短期动量为负(-1.1%)</div><div class="filtered-item">513030 德国30ETF — 短期动量为负(-26.8%)</div><div class="filtered-item">513080 法国ETF — 短期动量为负(-48.6%)</div><div class="filtered-item">513730 东南亚ETF — 短期动量为负(-70.1%)</div><div class="filtered-item">159792 港股互联ETF — 短期动量为负(-44.1%)</div><div class="filtered-item">513130 恒生科技 — 短期动量为负(-16.6%)</div><div class="filtered-item">513050 中概互联网ETF — 得分-0.44超出范围</div><div class="filtered-item">159920 恒生ETF — 短期动量为负(-19.7%)</div><div class="filtered-item">513690 港股红利 — 短期动量为负(-53.7%)</div><div class="filtered-item">510300 沪深300ETF — 短期动量为负(-5.8%)</div><div class="filtered-item">510500 中证500ETF — 得分-0.03超出范围</div><div class="filtered-item">510050 上证50ETF — 短期动量为负(-1.6%)</div><div class="filtered-item">510210 上证ETF — 未通过拉普拉斯滤波器</div><div class="filtered-item">159915 创业板ETF — 得分-0.16超出范围</div><div class="filtered-item">588080 科创50 — 得分-0.03超出范围</div><div class="filtered-item">512100 中证1000ETF — 得分-0.00超出范围</div><div class="filtered-item">563360 A500-ETF — 得分-0.13超出范围</div><div class="filtered-item">512890 红利低波ETF — 短期动量为负(-34.1%)</div><div class="filtered-item">159967 创业板成长ETF — 得分-0.00超出范围</div><div class="filtered-item">512040 价值ETF — 短期动量为负(-36.6%)</div><div class="filtered-item">159201 自由现金流ETF — 短期动量为负(-34.5%)</div><div class="filtered-item">511380 可转债ETF — 短期动量为负(-22.7%)</div><div class="filtered-item">511010 国债ETF — 短期动量为负(-8.5%)</div>
+</div>
+<div class="footer">
+    本报告由 ETF 动量轮动策略自动生成 | 仅供参考,不构成投资建议<br>
+    策略参数: 动量周期25天 | 持仓1只 | 盈利保护5% | 溢价率阈值20%
+</div>
+</div>
+</body>
+</html>
