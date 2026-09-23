@@ -1,4 +1,4 @@
-name: ETF 动量轮动每日分析
+name: 七星ETF轮动每日分析
 
 on:
   schedule:
