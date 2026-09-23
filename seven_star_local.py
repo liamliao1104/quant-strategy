@@ -329,7 +329,7 @@ def generate_html_report(ranked, market_state, market_info, filtered_list, outpu
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ETF动量轮动分析报告 - {today}</title>
+<title>七星ETF轮动分析报告 - {today}</title>
 <style>
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.6;padding:20px}}
