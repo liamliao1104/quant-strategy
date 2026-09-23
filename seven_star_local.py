@@ -366,7 +366,7 @@ td.score{{font-family:"SF Mono",monospace;font-weight:600;color:#2980b9}}
 <body>
 <div class="container">
 <div class="header">
-    <h1>ETF 动量轮动策略 - 每日分析报告</h1>
+    <h1>ETF 七星ETF本地轮动策略 - 每日分析报告</h1>
     <div class="date">{today} | 基于沪深300ETF风险基准</div>
     <div class="market-state">市场状态: {market_state}({market_info.get('filter','拉普拉斯滤波器')})</div>
 </div>
