@@ -27,7 +27,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 执行 ETF 动量分析
-        run: python etf_daily_analysis.py
+        run: python seven_star_local.py
         env:
           CI: 'true'
 
@@ -71,7 +71,7 @@ jobs:
               else:
                   title = f"ETF分析 {today}: 无ETF通过过滤"
 
-              lines = [f"## {today} ETF动量分析报告\n"]
+              lines = [f"## {today} 七星ETF轮动分析报告\n"]
               lines.append(f"**市场状态**: {state} ({mi.get('filter','')})\n")
               lines.append(f"**乖离率**: {mi.get('bias',0):.2%} | **RSI**: {mi.get('current_rsi','N/A')}\n")
               lines.append(f"**风险信号**: {'; '.join(signals) if signals else '无'}\n")
@@ -140,7 +140,7 @@ jobs:
               else:
                   subject = f"ETF分析 {today}: 无ETF通过过滤"
 
-              lines = [f"<h2>{today} ETF动量分析报告</h2>"]
+              lines = [f"<h2>{today} 七星ETF轮动分析报告</h2>"]
               lines.append(f"<p><b>市场状态</b>: {state} ({mi.get('filter','')})</p>")
               bias = mi.get('bias', 0) or 0
               rsi = mi.get('current_rsi', 'N/A')
