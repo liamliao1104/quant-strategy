@@ -36,7 +36,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reports/
-          git diff --staged --quiet || git commit -m "ETF分析报告 $(date -u -d '+8 hours' '+%Y%m%d')"
+          git diff --staged --quiet || git commit -m "ETF动量打分排名分析报告 $(date -u -d '+8 hours' '+%Y%m%d')"
           git push
 
       - name: 推送报告到微信(Server酱)
@@ -54,7 +54,7 @@ jobs:
           today = datetime.date.today().strftime("%Y%m%d")
           json_files = glob.glob(f"reports/etf_analysis_{today}.json")
           if not json_files:
-              title = f"ETF分析 {today} - 未生成报告"
+              title = f"ETF动量打分排名分析 {today} - 未生成报告"
               desp = "报告文件未生成，请检查 Actions 运行日志。"
           else:
               with open(json_files[0], encoding="utf-8") as f:
@@ -67,9 +67,9 @@ jobs:
 
               if ranked:
                   top = ranked[0]
-                  title = f"ETF分析 {today}: {top['name']} 得分{top['score']:.2f}"
+                  title = f"ETF动量打分排名分析 {today}: {top['name']} 得分{top['score']:.2f}"
               else:
-                  title = f"ETF分析 {today}: 无ETF通过过滤"
+                  title = f"ETF动量打分排名分析 {today}: 无ETF通过过滤"
 
               lines = [f"## {today} 七星ETF轮动分析报告\n"]
               lines.append(f"**市场状态**: {state} ({mi.get('filter','')})\n")
@@ -123,7 +123,7 @@ jobs:
           html_file = f"reports/etf_analysis_{today}.html"
 
           if not json_files:
-              subject = f"ETF分析 {today} - 未生成报告"
+              subject = f"ETF动量打分排名分析 {today} - 未生成报告"
               body_text = "报告文件未生成，请检查 Actions 运行日志。"
           else:
               with open(json_files[0], encoding="utf-8") as f:
@@ -136,9 +136,9 @@ jobs:
 
               if ranked:
                   top = ranked[0]
-                  subject = f"ETF分析 {today}: {top['name']} 得分{top['score']:.2f}"
+                  subject = f"ETF动量打分排名分析 {today}: {top['name']} 得分{top['score']:.2f}"
               else:
-                  subject = f"ETF分析 {today}: 无ETF通过过滤"
+                  subject = f"ETF动量打分排名分析 {today}: 无ETF通过过滤"
 
               lines = [f"<h2>{today} 七星ETF轮动分析报告</h2>"]
               lines.append(f"<p><b>市场状态</b>: {state} ({mi.get('filter','')})</p>")
